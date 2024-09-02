@@ -1,6 +1,6 @@
 {
   "name": "timerecorder",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Take timing notes of asynchronous events",
   "main": "index.js",
   "scripts": {

@@ -1,0 +1,30 @@
+{
+  "name": "timerecorder",
+  "version": "0.0.0",
+  "description": "Take timing notes of asynchronous events",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bitifet/timerecorder.git"
+  },
+  "keywords": [
+    "testing",
+    "async",
+    "time",
+    "execution-time",
+    "logging",
+    "dev",
+    "console",
+    "introspection",
+    "tool"
+  ],
+  "author": "Joan Miquel Torres <joanmi@bitifet.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bitifet/timerecorder/issues"
+  },
+  "homepage": "https://github.com/bitifet/timerecorder#readme"
+}

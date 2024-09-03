@@ -1,5 +1,7 @@
 "use strict";
 
+const bulletList = require("./emobullets.js");
+
 // Helpers:
 function formatTime(ms) {
     const milliseconds = ms % 1000;
@@ -16,7 +18,17 @@ function formatTime(ms) {
         ].join(":"),
         String(milliseconds).padStart(3, '0'),
     ].join(".");
-}
+};
+
+const getBullet = (() => {
+    let bId = 0;
+    return ()=>{
+        const bullet = bulletList[bId];
+        bId = (bId + 1) % bulletList.length;
+        return bullet;
+    };
+})();
+
 
 // Time recorder class
 class timerecorder {
@@ -29,6 +41,7 @@ class timerecorder {
         if (promise === undefined) {
             // Allow for labels:
             endReport.isLabel = true;
+            endReport.bullet = "👉"
             this.records.push(endReport);
             return;
         } else if (
@@ -37,6 +50,7 @@ class timerecorder {
             || typeof promise.catch != "function"
         ) {
             // Report as misleading:
+            endReport.bullet = "⚠️ ";
             endReport.endtime = Date.now();
             endReport.success = true; // Haven't thrown
             endReport.error = "Not a promise";
@@ -45,6 +59,7 @@ class timerecorder {
             this.records.push(endReport);
             return promise;
         } else { // Actual promise:
+            endReport.bullet = getBullet();
             this.records.push({...endReport}); // startReport
             promise.then((result)=>{
                 endReport.endtime = Date.now();
@@ -81,7 +96,9 @@ class timerecorder {
                     : "✔️ "
                 );
                 const evtime = formatTime(r.starttime - this.starttime);
-                reportLogFn(`${icon} ${evtime} ⏳ ??:??:??.??? - ${r.label}`);
+                reportLogFn(
+                    `${icon} ${evtime} ⏳ ??:??:??.??? ${r.bullet} ${r.label}`
+                );
             } else { // endReport
                 const icon = (
                     r.isSync ? "☑️ "
@@ -90,7 +107,7 @@ class timerecorder {
                 );
                 const evtime = formatTime(r.endtime - this.starttime);
                 const elapsedtime = formatTime(r.endtime - r.starttime);
-                reportLogFn(`${icon} ${evtime} ⏱️ ${elapsedtime} - ${r.label} ${
+                reportLogFn(`${icon} ${evtime} ⏱️ ${elapsedtime} ${r.bullet} ${r.label} ${
                     r.error ? "["+r.error+"]" : ""
                 }`)
                 if (r.data) reportDataFn(r.data);

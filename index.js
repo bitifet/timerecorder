@@ -70,7 +70,7 @@ class timerecorder {
             promise.catch(err=>{
                 endReport.endtime = Date.now();
                 endReport.success = false;
-                if (! err instanceof Error) err = new Error(err);
+                if (!(err instanceof Error)) err = new Error(err);
                 endReport.error = [err.name, err.message].filter(x=>x).join(": ");
                 if (cbk) endReport.data = cbk(err);
                 this.records.push(endReport);

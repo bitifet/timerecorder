@@ -72,7 +72,7 @@ class timerecorder {
                 const errorReport = {...endReport};
                 errorReport.endtime = Date.now();
                 errorReport.success = false;
-                if (! err instanceof Error) err = new Error(err);
+                if (! (err instanceof Error)) err = new Error(err);
                 errorReport.error = [err.name, err.message].filter(x=>x).join(": ");
                 if (cbk) errorReport.data = cbk(err);
                 this.records.push(errorReport);

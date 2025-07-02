@@ -62,18 +62,20 @@ class timerecorder {
             endReport.bullet = getBullet();
             this.records.push({...endReport}); // startReport
             promise.then((result)=>{
-                endReport.endtime = Date.now();
-                endReport.success = true;
-                if (cbk) endReport.data = cbk(null, result);
-                this.records.push(endReport);
+                const successReport = {...endReport};
+                successReport.endtime = Date.now();
+                successReport.success = true;
+                if (cbk) successReport.data = cbk(null, result);
+                this.records.push(successReport);
             });
             promise.catch(err=>{
-                endReport.endtime = Date.now();
-                endReport.success = false;
-                if (!(err instanceof Error)) err = new Error(err);
-                endReport.error = [err.name, err.message].filter(x=>x).join(": ");
-                if (cbk) endReport.data = cbk(err);
-                this.records.push(endReport);
+                const errorReport = {...endReport};
+                errorReport.endtime = Date.now();
+                errorReport.success = false;
+                if (! (err instanceof Error)) err = new Error(err);
+                errorReport.error = [err.name, err.message].filter(x=>x).join(": ");
+                if (cbk) errorReport.data = cbk(err);
+                this.records.push(errorReport);
             });
             return await promise;
         };
